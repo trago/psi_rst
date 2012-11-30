@@ -22,7 +22,7 @@ figure,imshow(I(:,:,1),[]),title('Interferograma de Entrada');
 %% Inicializando parametros del metodo RST.
 
 Muestreo = 8; % Numero de pixeles a satar para el muestreo.
-iters1   = 20; % Numero de iteraciones para el metodo completo.
+iters1   = 100; % Numero de iteraciones para el metodo completo.
 iters2   = 50; % Numero de iteraciones para el calculo de los pasos.
 lambda   = 0; % Parametro de regulacizacion.
 %% Inicializando parametros del metodo AIA.
