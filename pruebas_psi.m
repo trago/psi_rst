@@ -14,7 +14,7 @@ DC      = makeParabola(M,N,2);
 rampa   = makeRampa(0.051,0.051,M,N);
 phase   = makePeaks(N,M,A)+rampa;
 b       = 1;
-step_noise = 0.34;
+step_noise = 0.;
 
 [I,steps]       = makeI(DC,b,phase,step,step_noise,k,nv);
 figure,imshow(I(:,:,1),[]),title('Interferograma de Entrada');
