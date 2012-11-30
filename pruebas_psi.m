@@ -8,14 +8,15 @@ k       = 4;   % Number of frames.
 A       = 25;  % Amplitud para la fase tipo Peaks.
 
 step    = pi/4; % Valor del paso.
-nv      = 0.0; % Varianza del Ruido.
+nv      = 0.; % Varianza del Ruido.
 
 DC      = makeParabola(M,N,2);
 rampa   = makeRampa(0.051,0.051,M,N);
 phase   = makePeaks(N,M,A)+rampa;
 b       = 1;
+step_noise = 0.34;
 
-I       = makeI(DC,b,phase,step,k,nv);
+[I,steps]       = makeI(DC,b,phase,step,step_noise,k,nv);
 figure,imshow(I(:,:,1),[]),title('Interferograma de Entrada');
 
 %% Inicializando parametros del metodo RST.
@@ -61,6 +62,6 @@ disp('Estimados RST');
 disp(pasosRST-pasosRST(1));
 
 disp('Esperados');
-disp(step*(0:k-1));
+disp(steps);
 figure;
 imshow(I(:,:,1),[]),title('Interferograma de Entrada');
