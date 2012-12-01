@@ -7,10 +7,10 @@ N       = 512; % Number of columns of each interferogram.
 k       = 5;   % Number of frames.
 A       = 25;  % Amplitud para la fase tipo Peaks.
 
-step    = pi/4; % Valor del paso.
+step    = pi/2; % Valor del paso.
 nv      = 0.; % Varianza del Ruido.
 
-DC      = makeParabola(M,N,4);
+DC      = makeParabola(M,N,100);
 rampa   = makeRampa(0.051,0.051,M,N);
 phase   = 0*makePeaks(N,M,A)+rampa;
 b       = 1;
