@@ -4,7 +4,7 @@ close all;
 clear all;
 M       = 512; % Number of rows of each interferogram.
 N       = 512; % Number of columns of each interferogram.
-k       = 4;   % Number of frames.
+k       = 5;   % Number of frames.
 A       = 25;  % Amplitud para la fase tipo Peaks.
 
 step    = pi/4; % Valor del paso.
@@ -23,7 +23,7 @@ figure,imshow(I(:,:,1),[]),title('Interferograma de Entrada');
 %% Inicializando parametros del metodo RST.
 
 Muestreo = 4; % Numero de pixeles a satar para el muestreo.
-iters1   = 50; % Numero de iteraciones para el metodo completo.
+iters1   = 15; % Numero de iteraciones para el metodo completo.
 iters2   = 50; % Numero de iteraciones para el calculo de los pasos.
 lambda   = 0; % Parametro de regulacizacion.
 %% Inicializando parametros del metodo AIA.
