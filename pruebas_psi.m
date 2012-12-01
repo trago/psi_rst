@@ -8,11 +8,11 @@ k       = 5;   % Number of frames.
 A       = 25;  % Amplitud para la fase tipo Peaks.
 
 step    = pi/2; % Valor del paso.
-nv      = 0.; % Varianza del Ruido.
+nv      = 0.5; % Varianza del Ruido.
 
-DC      = makeParabola(M,N,100);
+DC      = makeParabola(M,N,5);
 rampa   = makeRampa(0.051,0.051,M,N);
-phase   = 0*makePeaks(N,M,A)+rampa;
+phase   = makePeaks(N,M,A)+rampa;
 b       = 1;
 step_noise = 0.5;
 
