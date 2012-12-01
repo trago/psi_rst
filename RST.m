@@ -1,6 +1,7 @@
 function [steps f] = RST(I,Sk,Ck,lambda,Muestreo,iters1,iters2,Show)
 
     q = Muestreo;
+
     Itmp = I(1:q:end,1:q:end,:);% Submuestreando los Interferogramas.
 
     [M N k] = size(Itmp);
@@ -14,9 +15,9 @@ function [steps f] = RST(I,Sk,Ck,lambda,Muestreo,iters1,iters2,Show)
     figure,
     for n=1:iters1
 
-       [a1 f] = MinCuaCpp(I,Sk,Ck);
-       ftmp = f(1:q:end,1:q:end,:);% Submuestreando fase calculada.
-
+        [a1 f] = MinCuaCpp(I,Sk,Ck);
+        ftmp = f(1:q:end,1:q:end);% Submuestreando fase calculada.
+        a = a1(1:q:end,1:q:end);
         for x=1:iters2
             [a S C] = gs_aCkSk(Itmp,ftmp,a,S,C,lambda);
         end

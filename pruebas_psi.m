@@ -21,7 +21,7 @@ figure,imshow(I(:,:,1),[]),title('Interferograma de Entrada');
 
 %% Inicializando parametros del metodo RST.
 
-Muestreo = 8; % Numero de pixeles a satar para el muestreo.
+Muestreo = 4; % Numero de pixeles a satar para el muestreo.
 iters1   = 100; % Numero de iteraciones para el metodo completo.
 iters2   = 50; % Numero de iteraciones para el calculo de los pasos.
 lambda   = 0; % Parametro de regulacizacion.
@@ -63,5 +63,12 @@ disp(pasosRST-pasosRST(1));
 
 disp('Esperados');
 disp(steps);
+
+disp('Error AIA');
+disp(abs(steps - pasosAIA+pasosAIA(1)));
+
+disp('Error RST');
+disp(abs(steps - pasosRST+pasosRST(1)));
+
 figure;
 imshow(I(:,:,1),[]),title('Interferograma de Entrada');
