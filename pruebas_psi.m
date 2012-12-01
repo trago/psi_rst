@@ -10,11 +10,11 @@ A       = 25;  % Amplitud para la fase tipo Peaks.
 step    = pi/4; % Valor del paso.
 nv      = 0.; % Varianza del Ruido.
 
-DC      = makeParabola(M,N,2);
+DC      = makeParabola(M,N,4);
 rampa   = makeRampa(0.051,0.051,M,N);
-phase   = makePeaks(N,M,A)+rampa;
+phase   = 0*makePeaks(N,M,A)+rampa;
 b       = 1;
-step_noise = 0.1;
+step_noise = 0.5;
 
 [I,steps]       = makeI(DC,b,phase,step,step_noise,k,nv);
 
@@ -22,14 +22,14 @@ figure,imshow(I(:,:,1),[]),title('Interferograma de Entrada');
 
 %% Inicializando parametros del metodo RST.
 
-Muestreo = 4; % Numero de pixeles a satar para el muestreo.
-iters1   = 15; % Numero de iteraciones para el metodo completo.
+Muestreo = 6; % Numero de pixeles a satar para el muestreo.
+iters1   = 25*2; % Numero de iteraciones para el metodo completo.
 iters2   = 50; % Numero de iteraciones para el calculo de los pasos.
 lambda   = 0; % Parametro de regulacizacion.
 %% Inicializando parametros del metodo AIA.
 
-iters = 50;
-v     = pi/2;
+iters = 20;
+v     = 1;
 Sk    = sin( v* (0:1:k-1) );
 Ck    = cos( v* (0:1:k-1) );
 Show  = 1; % 1 si se decea mostrar resultados parciales.
