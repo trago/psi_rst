@@ -14,15 +14,16 @@ DC      = makeParabola(M,N,2);
 rampa   = makeRampa(0.051,0.051,M,N);
 phase   = makePeaks(N,M,A)+rampa;
 b       = 1;
-step_noise = 0.;
+step_noise = 0.1;
 
 [I,steps]       = makeI(DC,b,phase,step,step_noise,k,nv);
+
 figure,imshow(I(:,:,1),[]),title('Interferograma de Entrada');
 
 %% Inicializando parametros del metodo RST.
 
 Muestreo = 4; % Numero de pixeles a satar para el muestreo.
-iters1   = 100; % Numero de iteraciones para el metodo completo.
+iters1   = 50; % Numero de iteraciones para el metodo completo.
 iters2   = 50; % Numero de iteraciones para el calculo de los pasos.
 lambda   = 0; % Parametro de regulacizacion.
 %% Inicializando parametros del metodo AIA.
