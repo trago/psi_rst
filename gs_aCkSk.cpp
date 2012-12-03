@@ -7,11 +7,11 @@ void getDCxy(double *gDC,double *DC,double *I,double *Phi,double *Psi,double *SS
              double *CCalpha,double lambda,int mI,int nI,int kI,int i,int j);
 
 void getSkCkxy(double *gSSalpha,double *gCCalpha,double *I,double *Phi,double *Psi,
-               double *DC,double *SSalpha,double *CCalpha,int mI,int nI,int kI,int i,int j);
+               double *DC,double *SSalpha,double *CCalpha,double lambda,int mI,int nI,int kI,int i,int j);
 
 
 void gs_DCCkSk_RST(double *gDC,double *gSSalpha,double *gCCalpha,double *I,double *Phi,double *Psi,
-                   double *DC,double *SSalpha,double *CCalpha,double lambda,int mI,int nI,int kI)
+                   double *DC,double *SSalpha,double *CCalpha,double lambdaDC,double lambdaSC,int mI,int nI,int kI)
 {
     //int w=1; // limite de la sumatoria para la ventana para el punto xy.
        
@@ -22,8 +22,8 @@ void gs_DCCkSk_RST(double *gDC,double *gSSalpha,double *gCCalpha,double *I,doubl
 //             getSkCkxy(gSSalpha,gCCalpha,I,Phi,Psi,gDC,SSalpha,CCalpha,mI,nI,kI,i,j);// encuentra los k-esimos cosenos y senos en el punto xy=j*mI+i;
             
             
-            getSkCkxy(gSSalpha,gCCalpha,I,Phi,Psi,DC,SSalpha,CCalpha,mI,nI,kI,i,j);// encuentra los k-esimos cosenos y senos en el punto xy=j*mI+i;
-            getDCxy(gDC,DC,I,Phi,Psi,gSSalpha,gCCalpha,lambda,mI,nI,kI,i,j); // encuentra el termino de DC en el punto xy=j*mI+i;
+            getSkCkxy(gSSalpha,gCCalpha,I,Phi,Psi,DC,SSalpha,CCalpha,lambdaSC,mI,nI,kI,i,j);// encuentra los k-esimos cosenos y senos en el punto xy=j*mI+i;
+            getDCxy(gDC,DC,I,Phi,Psi,gSSalpha,gCCalpha,lambdaDC,mI,nI,kI,i,j); // encuentra el termino de DC en el punto xy=j*mI+i;
             
             
         }
@@ -31,13 +31,14 @@ void gs_DCCkSk_RST(double *gDC,double *gSSalpha,double *gCCalpha,double *I,doubl
 }
 
 void getSkCkxy(double *gSSalpha,double *gCCalpha,double *I,double *Phi,double *Psi,
-               double *DC,double *SSalpha,double *CCalpha,int mI,int nI,int kI,int i,int j){
+               double *DC,double *SSalpha,double *CCalpha,double lambda,int mI,int nI,int kI,int i,int j){
     
     double sPhi=0,sPsi=0;
     double sPhi2=0,sPsi2=0;
     double sPhiPsi=0;
     double sIkPhi=0,sIkPsi=0;
-
+    double reg_Ck=0,reg_Sk=0;
+    
     int xyk=0;
     int m_xy=0,m_xyk=0;
     int xy = j*mI+i;
@@ -76,8 +77,33 @@ void getSkCkxy(double *gSSalpha,double *gCCalpha,double *I,double *Phi,double *P
             }
         }
         
-        gCCalpha[xyk] = (-DC[xy]*sPhi + sPhiPsi* SSalpha[xyk] + sIkPhi) / sPhi2;
-        gSSalpha[xyk] = ( DC[xy]*sPsi + sPhiPsi*gCCalpha[xyk] - sIkPsi) / sPsi2;
+      // Seccion de regularizacion.
+      reg_Ck = 0;
+      reg_Sk = 0;
+      int N  = 0;
+      if(i-1 >= 0){
+        reg_Ck += CCalpha[xyk-1];
+        reg_Sk += SSalpha[xyk-1];
+        N+=1;
+      }
+      if(i+1 < mI){
+        reg_Ck += CCalpha[xyk+1];
+        reg_Sk += SSalpha[xyk+1];
+        N+=1;
+      }
+      if(j-1 >= 0){
+        reg_Ck += CCalpha[xyk-mI];
+        reg_Sk += SSalpha[xyk-mI];
+        N+=1;
+      }
+      if(j+1 < nI){
+        reg_Ck += CCalpha[xyk+mI];
+        reg_Sk += SSalpha[xyk+mI];
+        N+=1;
+      }
+        
+        gCCalpha[xyk] = (-DC[xy]*sPhi + sPhiPsi* SSalpha[xyk] + sIkPhi + lambda*reg_Ck) / (sPhi2 + N*lambda);
+        gSSalpha[xyk] = ( DC[xy]*sPsi + sPhiPsi*gCCalpha[xyk] - sIkPsi + lambda*reg_Sk) / (sPsi2 + N*lambda);
     }
 }
 
@@ -156,8 +182,8 @@ void getDCxy(double *gDC,double *DC,double *I,double *Phi,double *Psi,double *SS
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs,
                  const mxArray *prhs[])
 {
-  if (nrhs!=6) {
-    mexErrMsgTxt("Se requieren 6 parametros (el segundo se espera que sea Complejo)");
+  if (nrhs!=7) {
+    mexErrMsgTxt("Se requieren 7 parametros (el segundo se espera que sea Complejo)");
   }
   double *I       = mxGetPr(prhs[0]);
   double *Phi     = mxGetPr(prhs[1]);
@@ -165,7 +191,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs,
   double *DC      = mxGetPr(prhs[2]);
   double *SSalpha = mxGetPr(prhs[3]);
   double *CCalpha = mxGetPr(prhs[4]);
-  double lambda   = *mxGetPr(prhs[5]);
+  double lambdaDC   = *mxGetPr(prhs[5]);
+  double lambdaSC   = *mxGetPr(prhs[6]);
   
   const int *Dims = mxGetDimensions(prhs[0]);
 
@@ -181,5 +208,5 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs,
   plhs[2]         = mxCreateNumericArray(3,Dims ,mxDOUBLE_CLASS,mxREAL);
   double* gCCalpha= mxGetPr(plhs[2]);
   
-  gs_DCCkSk_RST(gDC,gSSalpha,gCCalpha,I,Phi,Psi,DC,SSalpha,CCalpha,lambda,mI,nI,kI);
+  gs_DCCkSk_RST(gDC,gSSalpha,gCCalpha,I,Phi,Psi,DC,SSalpha,CCalpha,lambdaDC,lambdaSC,mI,nI,kI);
 }

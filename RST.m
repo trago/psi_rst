@@ -1,4 +1,4 @@
-function [steps f] = RST(I,Sk,Ck,lambda,Muestreo,iters1,iters2,Show)
+function [steps f] = RST(I,Sk,Ck,lambdaDC,lambdaSC,Muestreo,iters1,iters2,Show)
 
     q = Muestreo;
 
@@ -19,7 +19,7 @@ function [steps f] = RST(I,Sk,Ck,lambda,Muestreo,iters1,iters2,Show)
         ftmp = f(1:q:end,1:q:end);% Submuestreando fase calculada.
         a = a1(1:q:end,1:q:end);
         for x=1:iters2
-            [a S C] = gs_aCkSk(Itmp,ftmp,a,S,C,lambda);
+            [a S C] = gs_aCkSk(Itmp,ftmp,a,S,C,lambdaDC,lambdaSC);
         end
 
         steps = get_ModaPasos(S,C);
