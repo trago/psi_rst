@@ -11,9 +11,10 @@ function ModaPasos = get_ModaPasos(S,C)
     for n=1:k
         mi = min(min(pasos(:,:,n)));
         ma = max(max(pasos(:,:,n)));
+        bits = (ma-mi)/25;
         tmp = pasos(:,:,n);
 
-        [values xPlace] = hist(tmp(:),mi:.0001:ma);
+        [values xPlace] = hist(tmp(:),mi:bits:ma);
         [mModa mPlace]  = max(values);
         ModaPasos(n)    = xPlace(mPlace);
     end

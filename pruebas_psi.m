@@ -7,7 +7,7 @@ k       = 5;   % Number of frames.
 A       = 25;  % Amplitud para la fase tipo Peaks.
 
 step    = pi/3; % Valor del paso.
-nv      = 0.8; % Varianza del Ruido.
+nv      = 0.65; % Varianza del Ruido.
 
 DC      = makeParabola(M,N,5);
 rampa   = makeRampa(0.051,0.051,M,N);
@@ -21,14 +21,14 @@ step_noise = 0.5;
 %% Inicializando parametros del metodo RST.
 
 Muestreo = 6; % Numero de pixeles a satar para el muestreo.
-iters1   = 25*2; % Numero de iteraciones para el metodo completo.
+iters1   = 20; % Numero de iteraciones para el metodo completo.
 iters2   = 50; % Numero de iteraciones para el calculo de los pasos.
 lambdaDC = 0; % Parametro de regulacizacion para el DC
 lambdaSC = 100; % Parametro de regulacizacion para Seno y Coseno.
 %% Inicializando parametros del metodo AIA.
 
 iters = 20;
-v     = 1;
+v     = pi/2;
 Sk    = sin( v* (0:1:k-1) );
 Ck    = cos( v* (0:1:k-1) );
 Show  = 1; % 1 si se decea mostrar resultados parciales.
