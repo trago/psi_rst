@@ -13,7 +13,7 @@ DC      = makeParabola(M,N,5);
 rampa   = makeRampa(0.051,0.051,M,N);
 phase   = makePeaks(N,M,A)+rampa;
 b       = 1;
-step_noise = 0.5;
+step_noise = 0.9;
 
 [I,steps]       = makeI(DC,b,phase,step,step_noise,k,nv);
 
