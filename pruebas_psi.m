@@ -13,7 +13,7 @@ DC      = makeParabola(M,N,5);
 rampa   = makeRampa(0.051,0.051,M,N);
 phase   = makePeaks(N,M,A)+rampa;
 b       = 1;
-step_noise = 0.9;
+step_noise = 1.0;
 
 [I,steps]       = makeI(DC,b,phase,step,step_noise,k,nv);
 
@@ -28,7 +28,7 @@ lambdaSC = 100; % Parametro de regulacizacion para Seno y Coseno.
 %% Inicializando parametros del metodo AIA.
 
 iters = 20;
-v     = pi/2;
+v     = 1;
 Sk    = sin( v* (0:1:k-1) );
 Ck    = cos( v* (0:1:k-1) );
 Show  = 1; % 1 si se decea mostrar resultados parciales.
