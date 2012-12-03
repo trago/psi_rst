@@ -1,5 +1,4 @@
 %% Generando Interferogramas Sinteticos.
-%% Generando Interferogramas Sinteticos.
 close all;
 clear all;
 M       = 512; % Number of rows of each interferogram.
@@ -8,7 +7,7 @@ k       = 5;   % Number of frames.
 A       = 25;  % Amplitud para la fase tipo Peaks.
 
 step    = pi/2; % Valor del paso.
-nv      = 0.5; % Varianza del Ruido.
+nv      = 0.0; % Varianza del Ruido.
 
 DC      = makeParabola(M,N,5);
 rampa   = makeRampa(0.051,0.051,M,N);
@@ -45,7 +44,16 @@ tic
 [pasosAIA f_AIA] = AIA(I,Sk,Ck,iters,Show);
 tAIA = toc;
 
+%% Eliminando Piston de fase.
+pasosRST = pasosRST-pasosRST(1);
+Sk = sin(pasosRST);
+Ck = cos(pasosRST);
+[a1 f_RST] = MinCuaCpp(I,Sk,Ck);
 
+pasosAIA = pasosAIA-pasosAIA(1);
+Sk = sin(pasosAIA);
+Ck = cos(pasosAIA);
+[a1 f_AIA] = MinCuaCpp(I,Sk,Ck);
 
 %% Mostrando Resultados.
 
@@ -57,19 +65,19 @@ figure,imshow(SP_AIA,[]),title('fase Estimada AIA');
 figure,imshow(angle(exp(-1i*phase)),[]),title('fase Esperada');
 
 disp('Estimados AIA');
-disp(pasosAIA-pasosAIA(1));
+disp(pasosAIA);
 
 disp('Estimados RST');
-disp(pasosRST-pasosRST(1));
+disp(pasosRST);
 
 disp('Esperados');
 disp(steps);
 
 disp('Error AIA');
-disp(abs(steps - pasosAIA+pasosAIA(1)));
+disp(abs(steps - pasosAIA));
 
 disp('Error RST');
-disp(abs(steps - pasosRST+pasosRST(1)));
+disp(abs(steps - pasosRST));
 
 figure;
 imshow(I(:,:,1),[]),title('Interferograma de Entrada');
