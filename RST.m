@@ -1,4 +1,4 @@
-function [steps f] = RST(I,Sk,Ck,lambdaDC,lambdaSC,Muestreo,iters1,iters2,Show)
+function [steps f S C a] = RST(I,Sk,Ck,lambdaDC,lambdaSC,Muestreo,iters1,iters2,Show)
 
     q = Muestreo;
 
@@ -15,13 +15,15 @@ function [steps f] = RST(I,Sk,Ck,lambdaDC,lambdaSC,Muestreo,iters1,iters2,Show)
     figure,
     for n=1:iters1
 
-        [a1 f] = MinCuaCpp(I,Sk,Ck);
-        ftmp = f(1:q:end,1:q:end);% Submuestreando fase calculada.
-        a = a1(1:q:end,1:q:end);
+        [a1 f] = MinCuaCpp(Itmp,Sk,Ck);
+        %ftmp = f(1:q:end,1:q:end);% Submuestreando fase calculada.
+        %a = a1(1:q:end,1:q:end);
+        ftmp = f;
+        a = a1;
         for x=1:iters2
             [a S C] = gs_aCkSk(Itmp,ftmp,a,S,C,lambdaDC,lambdaSC);
         end
-
+        
         steps = get_ModaPasos(S,C);
         Sk = sin(steps);
         Ck = cos(steps);
@@ -33,5 +35,5 @@ function [steps f] = RST(I,Sk,Ck,lambdaDC,lambdaSC,Muestreo,iters1,iters2,Show)
             disp([n steps]);
         end
     end
-
+    
 end

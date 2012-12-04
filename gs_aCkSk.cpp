@@ -135,6 +135,7 @@ void getDCxy(double *gDC,double *DC,double *I,double *Phi,double *Psi,double *SS
 //     if(i==0    & j==nI-1){ elementos=3;}
 //     if(i==mI-1 & j==0){    elementos=3;}
     
+    elementos =0;
     for(int k=0;k < kI;k++){ // Recorre los kI Interferogramas
         xyk = (mI*nI*k)+xy;
 
@@ -149,6 +150,7 @@ void getDCxy(double *gDC,double *DC,double *I,double *Phi,double *Psi,double *SS
                     sPsi += Psi[m_xy];
                 }
                 sI += I[m_xyk];
+                elementos++;
             }
         }
         sCC += CCalpha[xyk];

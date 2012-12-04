@@ -7,7 +7,7 @@ k       = 5;   % Number of frames.
 A       = 25;  % Amplitud para la fase tipo Peaks.
 
 step    = pi/3; % Valor del paso.
-nv      = 0.65; % Varianza del Ruido.
+nv      = 0.8; % Varianza del Ruido.
 
 DC      = makeParabola(M,N,5);
 rampa   = makeRampa(0.051,0.051,M,N);
@@ -16,15 +16,16 @@ b       = 1;
 step_noise = 1.0;
 
 [I,steps]       = makeI(DC,b,phase,step,step_noise,k,nv);
+steps = atan2(sin(steps),cos(steps));
 
 
 %% Inicializando parametros del metodo RST.
 
-Muestreo = 6; % Numero de pixeles a satar para el muestreo.
+Muestreo = 8; % Numero de pixeles a satar para el muestreo.
 iters1   = 20; % Numero de iteraciones para el metodo completo.
 iters2   = 50; % Numero de iteraciones para el calculo de los pasos.
-lambdaDC = 0; % Parametro de regulacizacion para el DC
-lambdaSC = 100; % Parametro de regulacizacion para Seno y Coseno.
+lambdaDC = 00; % Parametro de regulacizacion para el DC
+lambdaSC = 500; % Parametro de regulacizacion para Seno y Coseno.
 %% Inicializando parametros del metodo AIA.
 
 iters = 20;
@@ -37,7 +38,7 @@ Show  = 1; % 1 si se decea mostrar resultados parciales.
 
 % Aplicando algoritmo RST.
 tic
-[pasosRST f_RST] = RST(I,Sk,Ck,lambdaDC,lambdaSC,Muestreo,iters1,iters2,Show);
+[pasosRST f_RST S C a] = RST(I,Sk,Ck,lambdaDC,lambdaSC,Muestreo,iters1,iters2,Show);
 tRST = toc;
 % Aplicando algoritmo AIA.
 tic
@@ -49,11 +50,13 @@ pasosRST = pasosRST-pasosRST(1);
 Sk = sin(pasosRST);
 Ck = cos(pasosRST);
 [a1 f_RST] = MinCuaCpp(I,Sk,Ck);
+pasosRST = atan2(Sk,Ck);
 
 pasosAIA = pasosAIA-pasosAIA(1);
 Sk = sin(pasosAIA);
 Ck = cos(pasosAIA);
 [a1 f_AIA] = MinCuaCpp(I,Sk,Ck);
+pasosAIA = atan2(Sk,Ck);
 
 %% Mostrando Resultados.
 
