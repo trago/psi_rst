@@ -62,10 +62,10 @@ void MinCuaReg(double *gDC,double *gPhi,double *gPsi,double *DC,double *Phi,doub
                 reg_DC  += DC [xy+mI];
                 N+=1;
             }
-            gDC[xy]  = (-sCk*Phi[xy] + sSk * Psi[xy] + sIk + lambdaDC*reg_DC )/(N*lambdaDC+kI);
-            gPhi[xy] = (-sCk*gDC[xy] + sSCk* Psi[xy] + sIC + lambdaf *reg_Phi)/(N*lambdaf +sCCk);
-            gPsi[xy] = ( sSk*gDC[xy] + sSCk*gPhi[xy] - sIS + lambdaf *reg_Psi)/(N*lambdaf +sSSk);
             
+            gPhi[xy] = (-sCk*  DC[xy] + sSCk* Psi[xy] + sIC + lambdaf *reg_Phi)/(N*lambdaf  + sCCk);
+            gPsi[xy] = ( sSk*  DC[xy] + sSCk*gPhi[xy] - sIS + lambdaf *reg_Psi)/(N*lambdaf  + sSSk);
+            gDC[xy]  = (-sCk*gPhi[xy] + sSk *gPsi[xy] + sIk + lambdaDC*reg_DC )/(N*lambdaDC + kI);
         }
     }
 }
@@ -94,11 +94,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs,
   int kI          = Dims[2];
   int Dims2[2]    = {mI,nI};
   
-  plhs[0]         = mxCreateNumericArray(2,Dims2,mxDOUBLE_CLASS,mxCOMPLEX);
-  double* gPhi    = mxGetPr(plhs[0]);
-  double* gPsi    = mxGetPi(plhs[0]);
-  plhs[1]         = mxCreateNumericArray(2,Dims2,mxDOUBLE_CLASS,mxREAL);
-  double* gDC     = mxGetPr(plhs[1]);
+  plhs[0]         = mxCreateNumericArray(2,Dims2,mxDOUBLE_CLASS,mxREAL);
+  double* gDC     = mxGetPr(plhs[0]);
+  plhs[1]         = mxCreateNumericArray(2,Dims2,mxDOUBLE_CLASS,mxCOMPLEX);
+  double* gPhi    = mxGetPr(plhs[1]);
+  double* gPsi    = mxGetPi(plhs[1]);
+
   
   MinCuaReg(gDC,gPhi,gPsi,DC,Phi,Psi,SSalpha,CCalpha,I,lambdaf,lambdaDC,mI,nI,kI);
 }
