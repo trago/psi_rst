@@ -24,12 +24,9 @@ steps = atan2(sin(steps),cos(steps));
 Muestreo = 8; % Numero de pixeles a satar para el muestreo.
 iters1   = 20; % Numero de iteraciones para el metodo completo.
 iters2   = 50; % Numero de iteraciones para el calculo de los pasos.
-<<<<<<< HEAD
 lambdaDC = 00; % Parametro de regulacizacion para el DC
 lambdaSC = 500; % Parametro de regulacizacion para Seno y Coseno.
-=======
 lambda   = 00; % Parametro de regulacizacion.
->>>>>>> aa8ceea8e5505a76373261b6a10ab95dba2797f5
 %% Inicializando parametros del metodo AIA.
 
 iters = 20;
