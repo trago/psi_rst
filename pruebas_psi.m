@@ -6,22 +6,22 @@ N       = 512; % Number of columns of each interferogram.
 k       = 5;   % Number of frames.
 A       = 25;  % Amplitud para la fase tipo Peaks.
 
-step    = pi/3; % Valor del paso.
+step    = pi/2; % Valor del paso.
 nv      = 0.8; % Varianza del Ruido.
 
 DC      = makeParabola(M,N,15);
 rampa   = makeRampa(0.051,0.051,M,N);
 phase   = makePeaks(N,M,A)+rampa;
 b       = 1;
-step_noise = 1.0;
+step_noise = 0.0;
 
 [I,steps]       = makeI(DC,b,phase,step,step_noise,k,nv);
-steps = atan2(sin(steps),cos(steps));
+%steps = atan2(sin(steps),cos(steps));
 
 
 %% Inicializando parametros del metodo RST.
 
-Muestreo = 8; % Numero de pixeles a satar para el muestreo.
+Muestreo = 6; % Numero de pixeles a satar para el muestreo.
 iters1   = 20; % Numero de iteraciones para el metodo completo.
 iters2   = 50; % Numero de iteraciones para el calculo de los pasos.
 lambdaDC = 00; % Parametro de regulacizacion para el DC
@@ -30,7 +30,7 @@ lambda   = 00; % Parametro de regulacizacion.
 %% Inicializando parametros del metodo AIA.
 
 iters = 20;
-v     = pi/2;
+v     = 1;
 Sk    = sin( v* (0:1:k-1) );
 Ck    = cos( v* (0:1:k-1) );
 Show  = 1; % 1 si se decea mostrar resultados parciales.

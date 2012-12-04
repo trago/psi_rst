@@ -13,7 +13,7 @@ DC      = makeParabola(M,N,15);
 rampa   = makeRampa(0.051,0.051,M,N);
 phase   = makePeaks(N,M,A)+rampa;
 b       = 1;
-step_noise = 0.5;
+step_noise = 0.0;
 
 [I,steps] = makeI(DC,b,phase,step,step_noise,k,nv);
 %steps = atan2(sin(steps),cos(steps));
@@ -21,17 +21,17 @@ step_noise = 0.5;
 
 %% Inicializando parametros para Minimos Cuadrados Regularizado.
 
-iters = 400;
-lambdaDC = 10; % Parametro de regulacizacion para el DC.
-lambdaf  = 15; % Parametro de regulacizacion para campo complejo.
+iters = 100;
+lambdaDC = 0; % Parametro de regulacizacion para el DC.
+lambdaf  = 0; % Parametro de regulacizacion para campo complejo.
 
 Phi   = ones(M,N);
 Psi   = ones(M,N);
 a     = ones(M,N);
 f     = complex(Phi,Psi);
-
-Sk    = sin(steps);
-Ck    = cos(steps);
+s = 1;
+Sk    = sin(s*(0:1:k-1));
+Ck    = cos(s*(0:1:k-1));
 
 %% Aplicando metodo Minimos Cuadrados Regularizado
 for n=1:iters
