@@ -9,7 +9,7 @@ A       = 25;  % Amplitud para la fase tipo Peaks.
 step    = pi/3; % Valor del paso.
 nv      = 0.8; % Varianza del Ruido.
 
-DC      = makeParabola(M,N,5);
+DC      = makeParabola(M,N,15);
 rampa   = makeRampa(0.051,0.051,M,N);
 phase   = makePeaks(N,M,A)+rampa;
 b       = 1;
@@ -24,12 +24,16 @@ steps = atan2(sin(steps),cos(steps));
 Muestreo = 8; % Numero de pixeles a satar para el muestreo.
 iters1   = 20; % Numero de iteraciones para el metodo completo.
 iters2   = 50; % Numero de iteraciones para el calculo de los pasos.
+<<<<<<< HEAD
 lambdaDC = 00; % Parametro de regulacizacion para el DC
 lambdaSC = 500; % Parametro de regulacizacion para Seno y Coseno.
+=======
+lambda   = 00; % Parametro de regulacizacion.
+>>>>>>> aa8ceea8e5505a76373261b6a10ab95dba2797f5
 %% Inicializando parametros del metodo AIA.
 
 iters = 20;
-v     = 1;
+v     = pi/2;
 Sk    = sin( v* (0:1:k-1) );
 Ck    = cos( v* (0:1:k-1) );
 Show  = 1; % 1 si se decea mostrar resultados parciales.
@@ -40,6 +44,7 @@ Show  = 1; % 1 si se decea mostrar resultados parciales.
 tic
 [pasosRST f_RST S C a] = RST(I,Sk,Ck,lambdaDC,lambdaSC,Muestreo,iters1,iters2,Show);
 tRST = toc;
+pasosRST=AntiAliasing(pasosRST)
 % Aplicando algoritmo AIA.
 tic
 [pasosAIA f_AIA] = AIA(I,Sk,Ck,iters,Show);
